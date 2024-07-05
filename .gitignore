@@ -1,2 +1,6 @@
+# Directories
 .idea
 cmake-build-debug
+
+# Files
+.config
