@@ -10,7 +10,14 @@
 
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+void cursor_position_callback(GLFWwindow *window, double xpos, double ypos);
 void processInput(GLFWwindow *window);
+
+struct
+{
+    double x;
+    double y;
+} cursorPos;
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -39,6 +46,7 @@ int main()
 
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, cursor_position_callback);
 
     if (!gladLoadGL(glfwGetProcAddress))
     {
@@ -105,6 +113,16 @@ int main()
 void framebuffer_size_callback(GLFWwindow *window, const int width, const int height)
 {
     glViewport(0, 0, width, height);
+}
+
+void cursor_position_callback(GLFWwindow *window, double xpos, double ypos)
+{
+    glfwGetCursorPos(window, &xpos, &ypos);
+    cursorPos = {xpos, ypos};
+
+#ifdef SHOW_COUT
+    std::cout << "x: " << cursorPos.x << ", y: " << cursorPos.y << std::endl;
+#endif
 }
 
 void processInput(GLFWwindow *window)
