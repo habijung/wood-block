@@ -1,0 +1,24 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "Configure",
+      "displayName": "Configure (Debug)",
+      "description": "",
+      "binaryDir": "${sourceDir}/cmake-build-preset",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "Build",
+      "displayName": "Build (Debug)",
+      "description": "",
+      "configurePreset": "Configure",
+      "jobs": 10
+    }
+  ]
+}
