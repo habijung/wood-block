@@ -1,4 +1,6 @@
 {
   "name": "untitled",
-  "dependencies": []
+  "dependencies": [
+    "freetype"
+  ]
 }

@@ -1,3 +1,6 @@
+cmake_minimum_required(VERSION 3.10)
+project(untitled)
+
 add_executable(${PROJECT_NAME}
         main.cpp
         shader.h
@@ -6,11 +9,13 @@ add_executable(${PROJECT_NAME}
 
 # Find packages
 find_package(OpenGL REQUIRED)
+find_package(Freetype REQUIRED)
 
 # Target link libraries
-target_link_libraries(${PROJECT_NAME} glfw)
-target_link_libraries(${PROJECT_NAME} OpenGL::GL)
-target_link_libraries(${PROJECT_NAME} GLAD)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
+target_link_libraries(${PROJECT_NAME} PRIVATE GLAD)
+target_link_libraries(${PROJECT_NAME} PRIVATE Freetype::Freetype)
 
 # Copy resources
 add_custom_command(
