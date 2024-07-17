@@ -1,3 +1,6 @@
 [submodule "external/glfw"]
 	path = external/glfw
 	url = git@github.com:habijung/glfw.git
+[submodule "vcpkg"]
+	path = vcpkg
+	url = git@github.com:habijung/vcpkg.git
