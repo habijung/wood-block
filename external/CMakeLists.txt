@@ -2,6 +2,7 @@ set(GLAD_SOURCES glad/src/gl.c)
 
 # Add subdirectories
 add_subdirectory(glfw)
+add_subdirectory(glm)
 
 # Add libraries
 add_library(GLAD STATIC ${GLAD_SOURCES})
