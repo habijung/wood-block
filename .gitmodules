@@ -1,9 +1,9 @@
 [submodule "vcpkg"]
 	path = vcpkg
-	url = git@github.com:habijung/vcpkg.git
+	url = https://github.com/habijung/vcpkg.git
 [submodule "external/glfw"]
 	path = external/glfw
-	url = git@github.com:habijung/glfw.git
+	url = https://github.com/habijung/glfw.git
 [submodule "external/glm"]
 	path = external/glm
-	url = git@github.com:habijung/glm.git
+	url = https://github.com/habijung/glm.git
