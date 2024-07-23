@@ -4,13 +4,21 @@
 
 ### Environment
 
-| Name               | Version |
-|:-------------------|:--------|
-| OpenGL             | 4.1     |
-| CMake              | 3.29.2  |
-| Ninja              | 1.12.0  |
-| GCC                | 12.2.0  |
-| Visual Studio 2022 | 17.8.12 |
+| Name                | Version |
+|:--------------------|:--------|
+| OpenGL              | 4.1     |
+| CMake               | 3.29.2  |
+| Ninja               | 1.12.0  |
+| GCC                 | 12.2.0  |
+| Visual Studio 2022  | 17.8.12 |
+
+- Windows
+  - **GCC** with MinGW-W64 (`posix-seh-msvcrt`)
+  - **Visual Studio 2022** for using vcpkg
+- macOS
+  - TBA
+- Linux
+  - TBA
 
 ### Build
 
