@@ -2,8 +2,8 @@
 
 # Set variables
 SOURCE_DIR=$(dirname $(realpath "$0"))
-C_COMPILER=$(which gcc)
-CXX_COMPILER=$(which g++)
+C_COMPILER=$(which cc)
+CXX_COMPILER=$(which c++)
 NINJA=$(which ninja)
 OS=$(uname)
 
