@@ -81,17 +81,13 @@ int main()
     }
 
     /* Shader: font */
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
     Shader fontShader("glsl/font.vert", "glsl/font.frag");
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
     fontShader.use();
     glUniformMatrix4fv(glGetUniformLocation(fontShader.getID(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
     /* Freetype loaded */
-    std::string fontName = std::filesystem::path("fonts/BitterPro-Regular.ttf").string();
+    std::string fontName = std::filesystem::path("fonts/arial.ttf").string();
     FT_Library ft;
     FT_Face face;
 
@@ -242,6 +238,11 @@ void processInput(GLFWwindow *window)
 
 void render_text(Shader &shader, std::string text, float x, float y, float scale, glm::vec3 color)
 {
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
     shader.use();
     glUniform3f(glGetUniformLocation(shader.getID(), "textColor"), color.x, color.y, color.z);
     glActiveTexture(GL_TEXTURE0);
@@ -277,4 +278,7 @@ void render_text(Shader &shader, std::string text, float x, float y, float scale
 
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
 }
