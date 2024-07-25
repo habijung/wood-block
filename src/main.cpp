@@ -105,6 +105,7 @@ int main()
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
+        /* Draw mouse cursor position text */
         std::stringstream cursorText;
         cursorText << "x: " << cursorPos.x << ", y: " << cursorPos.y;
         renderText.render_text(cursorText.str(), static_cast<float>(cursorPos.x),

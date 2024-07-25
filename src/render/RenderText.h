@@ -10,6 +10,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 #include "shader.h"
 
 
@@ -32,13 +35,18 @@ public:
     void set_font_size(unsigned int size);
 
 private:
-    void loadFreetype();
+    void load_font();
 
     unsigned int mVAO;
     unsigned int mVBO;
+
+    std::string mFont;
     unsigned int mFontSize;
     std::map<char, FontChar> mFontChars;
     Shader *mShader;
+
+    FT_Library mFTLibrary;
+    FT_Face mFTFace;
 };
 
 

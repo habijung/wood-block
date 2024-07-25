@@ -6,75 +6,22 @@
 
 #include <glad/gl.h>
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
 
 #include "RenderText.h"
 
-RenderText::RenderText(const char *vertexPath, const char *fragmentPath, glm::mat4 projection, const unsigned int fontSize)
+RenderText::RenderText(const char *vertexPath, const char *fragmentPath, glm::mat4 projection,
+                       const unsigned int fontSize)
 {
     mVAO = 0;
     mVBO = 0;
+    mFont = std::filesystem::path("data/fonts/arial.ttf").string();
     mFontSize = fontSize;
     mShader = new Shader(vertexPath, fragmentPath);
 
     mShader->use();
     glUniformMatrix4fv(glGetUniformLocation(mShader->getID(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-    /* Freetype loaded */
-    const std::string font = std::filesystem::path("data/fonts/arial.ttf").string();
-    FT_Library ft;
-    FT_Face face;
-
-    if (font.empty())
-    {
-        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
-    }
-
-    if (FT_Init_FreeType(&ft))
-    {
-        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
-        return;
-    }
-
-    if (FT_New_Face(ft, font.c_str(), 0, &face))
-    {
-        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
-        return;
-    }
-
-    FT_Set_Pixel_Sizes(face, 0, mFontSize);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-    for (unsigned char ch = 0; ch < 128; ch++)
-    {
-        if (FT_Load_Char(face, ch, FT_LOAD_RENDER))
-        {
-            std::cout << "ERROR::FREETYPE: Failed to load Glyph" << std::endl;
-            continue;
-        }
-
-        unsigned int texture;
-
-        glGenTextures(1, &texture);
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RED,
-                     GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        FontChar fontChar = {texture, glm::fvec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-                             glm::fvec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-                             static_cast<unsigned int>(face->glyph->advance.x)};
-
-        mFontChars.insert(std::pair<char, FontChar>(ch, fontChar));
-    }
-
-    FT_Done_Face(face);
-    FT_Done_FreeType(ft);
+    load_font();
 
     glGenVertexArrays(1, &mVAO);
     glGenBuffers(1, &mVBO);
@@ -140,4 +87,58 @@ void RenderText::set_font_size(unsigned int size)
 {
     // TODO: Update font size
     mFontSize = size;
+    load_font();
+}
+
+void RenderText::load_font()
+{
+    if (mFont.empty())
+    {
+        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+    }
+
+    if (FT_Init_FreeType(&mFTLibrary))
+    {
+        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+        return;
+    }
+
+    if (FT_New_Face(mFTLibrary, mFont.c_str(), 0, &mFTFace))
+    {
+        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+        return;
+    }
+
+    FT_Set_Pixel_Sizes(mFTFace, 0, mFontSize);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+    for (unsigned char ch = 0; ch < 128; ch++)
+    {
+        if (FT_Load_Char(mFTFace, ch, FT_LOAD_RENDER))
+        {
+            std::cout << "ERROR::FREETYPE: Failed to load Glyph" << std::endl;
+            continue;
+        }
+
+        unsigned int texture;
+
+        glGenTextures(1, &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, mFTFace->glyph->bitmap.width, mFTFace->glyph->bitmap.rows, 0, GL_RED,
+                     GL_UNSIGNED_BYTE, mFTFace->glyph->bitmap.buffer);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        FontChar fontChar = {texture, glm::fvec2(mFTFace->glyph->bitmap.width, mFTFace->glyph->bitmap.rows),
+                             glm::fvec2(mFTFace->glyph->bitmap_left, mFTFace->glyph->bitmap_top),
+                             static_cast<unsigned int>(mFTFace->glyph->advance.x)};
+
+        mFontChars.insert(std::pair<char, FontChar>(ch, fontChar));
+    }
+
+    FT_Done_Face(mFTFace);
+    FT_Done_FreeType(mFTLibrary);
 }
