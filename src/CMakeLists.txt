@@ -1,10 +1,18 @@
 cmake_minimum_required(VERSION 3.10)
 project(untitled)
 
-add_executable(${PROJECT_NAME}
-        main.cpp
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+set(SOURCES
         shader.h
         shader.cpp
+        render/RenderText.cpp
+        render/RenderText.h
+)
+
+add_executable(${PROJECT_NAME}
+        main.cpp
+        ${SOURCES}
 )
 
 # Find packages
