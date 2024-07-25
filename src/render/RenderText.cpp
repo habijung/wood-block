@@ -87,7 +87,7 @@ RenderText::RenderText(const char *vertexPath, const char *fragmentPath, glm::ma
     glBindVertexArray(0);
 }
 
-RenderText::~RenderText() = default;
+RenderText::~RenderText() { delete mShader; };
 
 void RenderText::render_text(std::string text, float x, float y, float scale, glm::vec3 color)
 {
