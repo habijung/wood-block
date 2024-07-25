@@ -11,10 +11,11 @@
 
 #include "RenderText.h"
 
-RenderText::RenderText(const char *vertexPath, const char *fragmentPath, glm::mat4 projection)
+RenderText::RenderText(const char *vertexPath, const char *fragmentPath, glm::mat4 projection, const unsigned int fontSize)
 {
     mVAO = 0;
     mVBO = 0;
+    mFontSize = fontSize;
     mShader = new Shader(vertexPath, fragmentPath);
 
     mShader->use();
@@ -42,7 +43,7 @@ RenderText::RenderText(const char *vertexPath, const char *fragmentPath, glm::ma
         return;
     }
 
-    FT_Set_Pixel_Sizes(face, 0, 24);
+    FT_Set_Pixel_Sizes(face, 0, mFontSize);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     for (unsigned char ch = 0; ch < 128; ch++)
@@ -133,4 +134,10 @@ void RenderText::render_text(std::string text, float x, float y, float scale, gl
 
     glDisable(GL_CULL_FACE);
     glDisable(GL_BLEND);
+}
+
+void RenderText::set_font_size(unsigned int size)
+{
+    // TODO: Update font size
+    mFontSize = size;
 }

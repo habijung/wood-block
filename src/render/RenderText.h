@@ -25,15 +25,18 @@ struct FontChar
 class RenderText
 {
 public:
-    RenderText(const char *vertexPath, const char *fragmentPath, glm::mat4 projection);
+    RenderText(const char *vertexPath, const char *fragmentPath, glm::mat4 projection, unsigned int fontSize = 20);
     ~RenderText();
 
     void render_text(std::string text, float x, float y, float scale, glm::vec3 color);
+    void set_font_size(unsigned int size);
 
 private:
     void loadFreetype();
 
-    unsigned int mVAO, mVBO;
+    unsigned int mVAO;
+    unsigned int mVBO;
+    unsigned int mFontSize;
     std::map<char, FontChar> mFontChars;
     Shader *mShader;
 };
