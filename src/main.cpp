@@ -68,7 +68,7 @@ int main()
 
     /* Shader: font */
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
-    RenderText rendertext("glsl/font.vert", "glsl/font.frag", projection);
+    RenderText renderText("glsl/font.vert", "glsl/font.frag", projection);
 
     /* Shader: Object */
     Shader objShader("glsl/obj.vert", "glsl/obj.frag");
@@ -111,12 +111,10 @@ int main()
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
-#ifdef FONT_TEST
-        std::stringstream tString;
-        tString << "x: " << cursorPos.x << ", y: " << cursorPos.y;
-        rendertext.render_text(tString.str(), static_cast<float>(cursorPos.x),
-                               static_cast<float>(SCR_HEIGHT - cursorPos.y), 1.0f, glm::vec3(0.3f, 0.8f, 0.2f));
-#endif
+        std::stringstream cursorText;
+        cursorText << "x: " << cursorPos.x << ", y: " << cursorPos.y;
+        renderText.render_text(cursorText.str(), static_cast<float>(cursorPos.x),
+                               static_cast<float>(SCR_HEIGHT - cursorPos.y), 1.0f, glm::vec3(0.0f));
 
         glfwSwapBuffers(window);
         glfwPollEvents();
