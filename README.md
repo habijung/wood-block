@@ -40,8 +40,9 @@ sh build.sh
 
 ```shell
 # Windows
-./cmake-build/src/untitled.exe
+cd cmake-build/src
+./untitled.exe
 ```
 
 ---
-**Last Updated:** 24.07.23
+**Last Updated:** 24.07.25

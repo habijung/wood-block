@@ -16,13 +16,16 @@ public:
     ~Shader();
 
     void use() const;
+
+    unsigned int getID() const;
+
     void setBool(const std::string &name, bool value) const;
     void setInt(const std::string &name, int value) const;
     void setFloat(const std::string &name, float value) const;
 
 private:
-    static void checkCompileErrors(unsigned int shader, const std::string& type) ;
-    
+    static void checkCompileErrors(unsigned int shader, const std::string &type);
+
     unsigned int mID;
 };
 
