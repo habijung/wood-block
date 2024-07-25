@@ -96,7 +96,7 @@ int main()
         processInput(window);
 
         // Rendering
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.95f, 0.95f, 0.95f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         objShader.use();
