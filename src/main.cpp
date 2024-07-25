@@ -1,12 +1,7 @@
-#define FONT_TEST
-
-// STD
 #include <filesystem>
 #include <iostream>
-#include <map>
 #include <sstream>
 
-// External
 #include <glad/gl.h>
 
 #include <GLFW/glfw3.h>
@@ -14,7 +9,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-// Others
 #include "render/RenderText.h"
 #include "shader.h"
 
