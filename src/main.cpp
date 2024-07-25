@@ -87,7 +87,7 @@ int main()
     glUniformMatrix4fv(glGetUniformLocation(fontShader.getID(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
     /* Freetype loaded */
-    std::string fontName = std::filesystem::path("fonts/arial.ttf").string();
+    std::string fontName = std::filesystem::path("data/fonts/arial.ttf").string();
     FT_Library ft;
     FT_Face face;
 
