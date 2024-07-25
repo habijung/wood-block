@@ -22,7 +22,7 @@ RenderText::RenderText(const char *vertexPath, const char *fragmentPath, glm::ma
     glUniformMatrix4fv(glGetUniformLocation(mShader->getID(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
     /* Freetype loaded */
-    std::string font = std::filesystem::path("data/fonts/arial.ttf").string();
+    const std::string font = std::filesystem::path("data/fonts/arial.ttf").string();
     FT_Library ft;
     FT_Face face;
 
