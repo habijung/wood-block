@@ -25,6 +25,12 @@ struct FontChar
     unsigned int advance;
 };
 
+struct WindowSize
+{
+    int width;
+    int height;
+};
+
 
 class RenderText
 {
@@ -34,13 +40,15 @@ public:
 
     void render_text(std::string text, float x, float y, float scale, glm::vec3 color);
     void set_font_size(unsigned int size);
-    void set_projection(GLFWwindow *window) const;
 
 private:
+    void update_projection();
     void load_font();
 
     unsigned int mVAO;
     unsigned int mVBO;
+    GLFWwindow *mWindow;
+    WindowSize mWindowSize;
 
     std::string mFont;
     unsigned int mFontSize;

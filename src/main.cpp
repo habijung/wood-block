@@ -107,13 +107,8 @@ int main()
         /* Draw mouse cursor position text */
         std::stringstream cursorText;
         cursorText << "x: " << cursorPos.x << ", y: " << cursorPos.y;
-
-        int width;
-        int height;
-        glfwGetWindowSize(window, &width, &height);
-        renderText.set_projection(window);
-        renderText.render_text(cursorText.str(), static_cast<float>(cursorPos.x),
-                               static_cast<float>(height - cursorPos.y), 1.0f, glm::vec3(0.0f));
+        renderText.render_text(cursorText.str(), static_cast<float>(cursorPos.x), static_cast<float>(cursorPos.y), 1.0f,
+                               glm::vec3(0.0f));
 
         glfwSwapBuffers(window);
         glfwPollEvents();
