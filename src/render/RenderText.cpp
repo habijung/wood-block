@@ -1,6 +1,3 @@
-//
-// Created by habi on 7/25/2024.
-//
 #include <filesystem>
 #include <iostream>
 
