@@ -18,17 +18,18 @@ void cursor_position_callback(GLFWwindow *window, double xpos, double ypos);
 void processInput(GLFWwindow *window);
 void render_text(Shader &shader, std::string text, float x, float y, float scale, glm::vec3 color);
 
-struct
+struct cursorPos
 {
-    double x;
-    double y;
-} cursorPos;
+    float x;
+    float y;
+};
 
 constexpr unsigned int SCR_WIDTH = 800;
 constexpr unsigned int SCR_HEIGHT = 600;
 
 float obj[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
 unsigned int indices[] = {0, 1, 2};
+cursorPos cursorPos = {0.0f, 0.0f};
 
 
 int main()
@@ -105,10 +106,9 @@ int main()
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         /* Draw mouse cursor position text */
-        std::stringstream cursorText;
-        cursorText << "x: " << static_cast<int>(cursorPos.x) << ", y: " << static_cast<int>(cursorPos.y);
-        renderText.render_text(cursorText.str(), static_cast<float>(cursorPos.x), static_cast<float>(cursorPos.y), 1.0f,
-                               glm::vec3(0.0f));
+        std::stringstream cursorPosText;
+        cursorPosText << "x: " << static_cast<int>(cursorPos.x) << ", y: " << static_cast<int>(cursorPos.y);
+        renderText.render_text(cursorPosText.str(), cursorPos.x, cursorPos.y, 1.0f, glm::vec3(0.0f));
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -131,11 +131,8 @@ void framebuffer_size_callback(GLFWwindow *window, const int width, const int he
 void cursor_position_callback(GLFWwindow *window, double xpos, double ypos)
 {
     glfwGetCursorPos(window, &xpos, &ypos);
-    cursorPos = {xpos, ypos};
-
-#ifdef SHOW_COUT
-    std::cout << "x: " << cursorPos.x << ", y: " << cursorPos.y << std::endl;
-#endif
+    cursorPos.x = static_cast<float>(xpos);
+    cursorPos.y = static_cast<float>(ypos);
 }
 
 void processInput(GLFWwindow *window)
