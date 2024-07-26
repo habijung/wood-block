@@ -60,9 +60,8 @@ int main()
         return -1;
     }
 
-    /* Shader: font */
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
-    RenderText renderText("glsl/font.vert", "glsl/font.frag", projection);
+    /* Set class RenderText */
+    RenderText renderText(window, "glsl/font.vert", "glsl/font.frag");
 
     /* Shader: Object */
     Shader objShader("glsl/obj.vert", "glsl/obj.frag");
@@ -108,8 +107,13 @@ int main()
         /* Draw mouse cursor position text */
         std::stringstream cursorText;
         cursorText << "x: " << cursorPos.x << ", y: " << cursorPos.y;
+
+        int width;
+        int height;
+        glfwGetWindowSize(window, &width, &height);
+        renderText.set_projection(window);
         renderText.render_text(cursorText.str(), static_cast<float>(cursorPos.x),
-                               static_cast<float>(SCR_HEIGHT - cursorPos.y), 1.0f, glm::vec3(0.0f));
+                               static_cast<float>(height - cursorPos.y), 1.0f, glm::vec3(0.0f));
 
         glfwSwapBuffers(window);
         glfwPollEvents();

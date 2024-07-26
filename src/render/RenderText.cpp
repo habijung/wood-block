@@ -6,10 +6,9 @@
 
 #include <glad/gl.h>
 
-
 #include "RenderText.h"
 
-RenderText::RenderText(const char *vertexPath, const char *fragmentPath, glm::mat4 projection,
+RenderText::RenderText(GLFWwindow *window, const char *vertexPath, const char *fragmentPath,
                        const unsigned int fontSize)
 {
     mVAO = 0;
@@ -18,9 +17,7 @@ RenderText::RenderText(const char *vertexPath, const char *fragmentPath, glm::ma
     mFontSize = fontSize;
     mShader = new Shader(vertexPath, fragmentPath);
 
-    mShader->use();
-    glUniformMatrix4fv(glGetUniformLocation(mShader->getID(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
+    set_projection(window);
     load_font();
 
     glGenVertexArrays(1, &mVAO);
@@ -88,6 +85,17 @@ void RenderText::set_font_size(unsigned int size)
     // TODO: Update font size
     mFontSize = size;
     load_font();
+}
+
+void RenderText::set_projection(GLFWwindow *window) const
+{
+    int width;
+    int height;
+    glfwGetWindowSize(window, &width, &height);
+
+    mShader->use();
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height));
+    glUniformMatrix4fv(glGetUniformLocation(mShader->getID(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 }
 
 void RenderText::load_font()

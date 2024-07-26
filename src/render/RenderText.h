@@ -6,6 +6,7 @@
 
 #include <map>
 
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -28,11 +29,12 @@ struct FontChar
 class RenderText
 {
 public:
-    RenderText(const char *vertexPath, const char *fragmentPath, glm::mat4 projection, unsigned int fontSize = 20);
+    RenderText(GLFWwindow *window, const char *vertexPath, const char *fragmentPath, unsigned int fontSize = 20);
     ~RenderText();
 
     void render_text(std::string text, float x, float y, float scale, glm::vec3 color);
     void set_font_size(unsigned int size);
+    void set_projection(GLFWwindow *window) const;
 
 private:
     void load_font();
