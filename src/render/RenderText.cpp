@@ -1,15 +1,11 @@
-//
-// Created by habi on 7/25/2024.
-//
 #include <filesystem>
 #include <iostream>
 
 #include <glad/gl.h>
 
-
 #include "RenderText.h"
 
-RenderText::RenderText(const char *vertexPath, const char *fragmentPath, glm::mat4 projection,
+RenderText::RenderText(GLFWwindow *window, const char *vertexPath, const char *fragmentPath,
                        const unsigned int fontSize)
 {
     mVAO = 0;
@@ -17,10 +13,9 @@ RenderText::RenderText(const char *vertexPath, const char *fragmentPath, glm::ma
     mFont = std::filesystem::path("data/fonts/arial.ttf").string();
     mFontSize = fontSize;
     mShader = new Shader(vertexPath, fragmentPath);
+    mWindow = window;
 
-    mShader->use();
-    glUniformMatrix4fv(glGetUniformLocation(mShader->getID(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
+    update_projection();
     load_font();
 
     glGenVertexArrays(1, &mVAO);
@@ -38,6 +33,8 @@ RenderText::~RenderText() { delete mShader; };
 
 void RenderText::render_text(std::string text, float x, float y, float scale, glm::vec3 color)
 {
+    update_projection();
+
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -55,7 +52,7 @@ void RenderText::render_text(std::string text, float x, float y, float scale, gl
         FontChar ch = mFontChars[*iter];
 
         float xpos = x + ch.bearing.x * scale;
-        float ypos = y - (ch.size.y - ch.bearing.y) * scale;
+        float ypos = (static_cast<float>(mWindowSize.height) - y) - (ch.size.y - ch.bearing.y) * scale;
         float w = ch.size.x * scale;
         float h = ch.size.y * scale;
 
@@ -88,6 +85,16 @@ void RenderText::set_font_size(unsigned int size)
     // TODO: Update font size
     mFontSize = size;
     load_font();
+}
+
+void RenderText::update_projection()
+{
+    glfwGetWindowSize(mWindow, &mWindowSize.width, &mWindowSize.height);
+
+    mShader->use();
+    glm::mat4 projection =
+        glm::ortho(0.0f, static_cast<float>(mWindowSize.width), 0.0f, static_cast<float>(mWindowSize.height));
+    glUniformMatrix4fv(glGetUniformLocation(mShader->getID(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 }
 
 void RenderText::load_font()

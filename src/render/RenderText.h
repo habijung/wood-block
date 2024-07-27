@@ -1,11 +1,9 @@
-//
-// Created by habi on 7/25/2024.
-//
 #ifndef RENDERTEXT_H
 #define RENDERTEXT_H
 
 #include <map>
 
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -24,21 +22,30 @@ struct FontChar
     unsigned int advance;
 };
 
+struct WindowSize
+{
+    int width;
+    int height;
+};
+
 
 class RenderText
 {
 public:
-    RenderText(const char *vertexPath, const char *fragmentPath, glm::mat4 projection, unsigned int fontSize = 20);
+    RenderText(GLFWwindow *window, const char *vertexPath, const char *fragmentPath, unsigned int fontSize = 20);
     ~RenderText();
 
     void render_text(std::string text, float x, float y, float scale, glm::vec3 color);
     void set_font_size(unsigned int size);
 
 private:
+    void update_projection();
     void load_font();
 
     unsigned int mVAO;
     unsigned int mVBO;
+    GLFWwindow *mWindow;
+    WindowSize mWindowSize;
 
     std::string mFont;
     unsigned int mFontSize;
