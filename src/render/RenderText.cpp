@@ -5,18 +5,18 @@
 
 #include "RenderText.h"
 
-RenderText::RenderText(GLFWwindow *window, const char *vertexPath, const char *fragmentPath,
-                       const unsigned int fontSize)
+RenderText::RenderText(GLFWwindow *window, const char *vertex_path, const char *fragment_path,
+                       const unsigned int font_size)
 {
     mVAO = 0;
     mVBO = 0;
     mFont = std::filesystem::path("data/fonts/arial.ttf").string();
-    mFontSize = fontSize;
-    mShader = new Shader(vertexPath, fragmentPath);
+    mFontSize = font_size;
+    mShader = new Shader(vertex_path, fragment_path);
     mWindow = window;
 
-    update_projection();
-    load_font();
+    updateProjection();
+    loadFont();
 
     glGenVertexArrays(1, &mVAO);
     glGenBuffers(1, &mVBO);
@@ -31,9 +31,9 @@ RenderText::RenderText(GLFWwindow *window, const char *vertexPath, const char *f
 
 RenderText::~RenderText() { delete mShader; };
 
-void RenderText::render_text(std::string text, float x, float y, float scale, glm::vec3 color)
+void RenderText::renderText(std::string text, float x, float y, float scale, glm::vec3 color)
 {
-    update_projection();
+    updateProjection();
 
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
@@ -61,7 +61,7 @@ void RenderText::render_text(std::string text, float x, float y, float scale, gl
                                 {xpos + w, ypos, 1.0f, 1.0f}, {xpos, ypos + h, 0.0f, 0.0f},
                                 {xpos + w, ypos, 1.0f, 1.0f}, {xpos + w, ypos + h, 1.0f, 0.0f}};
 
-        glBindTexture(GL_TEXTURE_2D, ch.textureID);
+        glBindTexture(GL_TEXTURE_2D, ch.texture_id);
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -80,14 +80,14 @@ void RenderText::render_text(std::string text, float x, float y, float scale, gl
     glDisable(GL_BLEND);
 }
 
-void RenderText::set_font_size(unsigned int size)
+void RenderText::setFontSize(unsigned int size)
 {
     // TODO: Update font size
     mFontSize = size;
-    load_font();
+    loadFont();
 }
 
-void RenderText::update_projection()
+void RenderText::updateProjection()
 {
     glfwGetWindowSize(mWindow, &mWindowSize.width, &mWindowSize.height);
 
@@ -97,7 +97,7 @@ void RenderText::update_projection()
     glUniformMatrix4fv(glGetUniformLocation(mShader->getID(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 }
 
-void RenderText::load_font()
+void RenderText::loadFont()
 {
     if (mFont.empty())
     {

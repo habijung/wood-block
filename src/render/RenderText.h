@@ -11,12 +11,12 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include "shader.h"
+#include "Shader.h"
 
 
 struct FontChar
 {
-    unsigned int textureID;
+    unsigned int texture_id;
     glm::fvec2 size;
     glm::fvec2 bearing;
     unsigned int advance;
@@ -32,15 +32,15 @@ struct WindowSize
 class RenderText
 {
 public:
-    RenderText(GLFWwindow *window, const char *vertexPath, const char *fragmentPath, unsigned int fontSize = 20);
+    RenderText(GLFWwindow *window, const char *vertex_path, const char *fragment_path, unsigned int font_size = 20);
     ~RenderText();
 
-    void render_text(std::string text, float x, float y, float scale, glm::vec3 color);
-    void set_font_size(unsigned int size);
+    void renderText(std::string text, float x, float y, float scale, glm::vec3 color);
+    void setFontSize(unsigned int size);
 
 private:
-    void update_projection();
-    void load_font();
+    void updateProjection();
+    void loadFont();
 
     unsigned int mVAO;
     unsigned int mVBO;

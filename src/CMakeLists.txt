@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 set(SOURCES
-        shader.h
-        shader.cpp
+        Shader.h
+        Shader.cpp
         render/RenderText.cpp
         render/RenderText.h
 )

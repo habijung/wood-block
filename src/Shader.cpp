@@ -1,49 +1,43 @@
-//
-// Created by habi on 7/15/2024.
-//
+#include "Shader.h"
 
-// Class header
-#include "shader.h"
-
-// STD
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-// External
 #include <glad/gl.h>
 
 
-Shader::Shader(const char *vertexPath, const char *fragmentPath)
+Shader::Shader(const char *vertex_path, const char *fragment_path)
 {
     /* Get shader source code */
-    std::ifstream vShaderFile;
-    std::ifstream fShaderFile;
-    std::string vShaderString;
-    std::string fShaderString;
-    const char *vShaderSource;
-    const char *fShaderSource;
+    std::ifstream v_shader_file;
+    std::ifstream f_shader_file;
+    std::string v_shader_string;
+    std::string f_shader_string;
+    const char *v_shader_source;
+    const char *f_shader_source;
 
-    vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-    fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    v_shader_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    f_shader_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
     /* Get code with file */
     try
     {
-        std::stringstream vShaderStream, fShaderStream;
+        std::stringstream v_shader_stream;
+        std::stringstream f_shader_stream;
 
-        vShaderFile.open(std::filesystem::path(vertexPath));
-        vShaderStream << vShaderFile.rdbuf();
-        vShaderFile.close();
-        vShaderString = vShaderStream.str();
-        vShaderSource = vShaderString.c_str();
+        v_shader_file.open(std::filesystem::path(vertex_path));
+        v_shader_stream << v_shader_file.rdbuf();
+        v_shader_file.close();
+        v_shader_string = v_shader_stream.str();
+        v_shader_source = v_shader_string.c_str();
 
-        fShaderFile.open(std::filesystem::path(fragmentPath));
-        fShaderStream << fShaderFile.rdbuf();
-        fShaderFile.close();
-        fShaderString = fShaderStream.str();
-        fShaderSource = fShaderString.c_str();
+        f_shader_file.open(std::filesystem::path(fragment_path));
+        f_shader_stream << f_shader_file.rdbuf();
+        f_shader_file.close();
+        f_shader_string = f_shader_stream.str();
+        f_shader_source = f_shader_string.c_str();
     }
     catch (std::ifstream::failure e)
     {
@@ -53,16 +47,16 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath)
     /* Link and Compile vertex, fragment shader */
     unsigned int vertex, fragment;
     int success;
-    char infoLog[512];
+    char info_log[512];
 
     vertex = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex, 1, &vShaderSource, nullptr);
+    glShaderSource(vertex, 1, &v_shader_source, nullptr);
     glCompileShader(vertex);
     glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
     checkCompileErrors(vertex, "VERTEX");
 
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment, 1, &fShaderSource, nullptr);
+    glShaderSource(fragment, 1, &f_shader_source, nullptr);
     glCompileShader(fragment);
     glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
     checkCompileErrors(fragment, "FRAGMENT");
@@ -103,7 +97,7 @@ void Shader::setFloat(const std::string &name, const float value) const
 void Shader::checkCompileErrors(const unsigned int shader, const std::string &type)
 {
     int success;
-    char infoLog[1024];
+    char info_log[1024];
 
     if (type != "PROGRAM")
     {
@@ -111,8 +105,8 @@ void Shader::checkCompileErrors(const unsigned int shader, const std::string &ty
 
         if (!success)
         {
-            glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
-            std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog << std::endl;
+            glGetShaderInfoLog(shader, 1024, nullptr, info_log);
+            std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << info_log << std::endl;
         }
     }
     else
@@ -121,8 +115,8 @@ void Shader::checkCompileErrors(const unsigned int shader, const std::string &ty
 
         if (!success)
         {
-            glGetProgramInfoLog(shader, 1024, nullptr, infoLog);
-            std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << std::endl;
+            glGetProgramInfoLog(shader, 1024, nullptr, info_log);
+            std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << info_log << std::endl;
         }
     }
 }

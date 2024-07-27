@@ -1,18 +1,13 @@
-//
-// Created by habi on 7/15/2024.
-//
-
 #ifndef SHADER_H
 #define SHADER_H
 
-// STD
 #include <string>
 
 
 class Shader
 {
 public:
-    Shader(const char *vertexPath, const char *fragmentPath);
+    Shader(const char *vertex_path, const char *fragment_path);
     ~Shader();
 
     void use() const;
