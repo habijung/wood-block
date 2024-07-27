@@ -13,8 +13,10 @@
 #include "render/RenderText.h"
 
 
-void framebufferSizeCallback(GLFWwindow *window, int width, int height);
-void cursorPositionCallback(GLFWwindow *window, double xpos, double ypos);
+/* GLFW callback function */
+void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+void cursor_position_callback(GLFWwindow *window, double xpos, double ypos);
+
 void processInput(GLFWwindow *window);
 
 struct CursorPos
@@ -50,8 +52,8 @@ int main()
     }
 
     glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
-    glfwSetCursorPosCallback(window, cursorPositionCallback);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, cursor_position_callback);
 
     if (!gladLoadGL(glfwGetProcAddress))
     {
@@ -122,9 +124,9 @@ int main()
     return 0;
 }
 
-void framebufferSizeCallback(GLFWwindow *window, int width, int height) { glViewport(0, 0, width, height); }
+void framebuffer_size_callback(GLFWwindow *window, int width, int height) { glViewport(0, 0, width, height); }
 
-void cursorPositionCallback(GLFWwindow *window, double xpos, double ypos)
+void cursor_position_callback(GLFWwindow *window, double xpos, double ypos)
 {
     glfwGetCursorPos(window, &xpos, &ypos);
     CursorPos.x = static_cast<float>(xpos);
