@@ -23,9 +23,11 @@ class PascalCase
 public:
     void camelCase();
     int perimeter;
+
 private:
     int mLength;
     int mWidth;
+    int mCamelCase;
 }
 
 struct PascalCase
@@ -54,6 +56,9 @@ int *snake_case;
 
 // Constant
 const double UPPER_CASE = 1.23;
+
+// Class variable
+int mCamelCase;
 ```
 
 ### File Name
