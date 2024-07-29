@@ -32,6 +32,12 @@ float obj[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
 unsigned int indices[] = {0, 1, 2};
 CursorPos CursorPos = {0.0f, 0.0f};
 
+glm::vec3 camera_position = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 camera_front = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 camera_up = glm::vec3(0.0f, 1.0f, 0.0f);
+float delta_time = 0.0f;
+float last_frame = 0.0f;
+
 
 int main()
 {
@@ -96,6 +102,10 @@ int main()
     /* Render loop */
     while (!glfwWindowShouldClose(window))
     {
+        float current_frame = static_cast<float>(glfwGetTime());
+        delta_time = current_frame - last_frame;
+        last_frame = current_frame;
+
         processInput(window);
 
         // Rendering
@@ -104,15 +114,15 @@ int main()
 
         ObjectShader.use();
 
-        glm::mat4 default_mat4 = glm::mat4(1.0f);
-        glm::mat4 model = glm::rotate(default_mat4, static_cast<float>(glfwGetTime()) * glm::radians(-55.0f),
+        glm::mat4 model = glm::rotate(glm::mat4(1.0f), static_cast<float>(glfwGetTime()) * glm::radians(-55.0f),
                                       glm::vec3(1.0f, 0.0f, 0.0f));
-        glm::mat4 view = glm::translate(default_mat4, glm::vec3(0.0f, 0.0f, -3.0f));
+        ObjectShader.setMat4("model", model);
+
+        glm::mat4 view = glm::lookAt(camera_position, camera_position + camera_front, camera_up);
+        ObjectShader.setMat4("view", view);
+
         glm::mat4 projection =
             glm::perspective(glm::radians(45.0f), static_cast<float>(SCR_WIDTH / SCR_HEIGHT), 0.1f, 100.0f);
-
-        ObjectShader.setMat4("model", model);
-        ObjectShader.setMat4("view", view);
         ObjectShader.setMat4("projection", projection);
 
         glBindVertexArray(vao);
@@ -151,5 +161,33 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
         glfwSetWindowShouldClose(window, true);
+    }
+
+    /* Camera move control */
+    float camera_speed = static_cast<float>(delta_time * 2.5);
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    {
+        camera_position += camera_front * camera_speed;
+    }
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    {
+        camera_position -= camera_front * camera_speed;
+    }
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    {
+        camera_position -= glm::normalize(glm::cross(camera_front, camera_up)) * camera_speed;
+    }
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    {
+        camera_position += glm::normalize(glm::cross(camera_front, camera_up)) * camera_speed;
+    }
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+    {
+        camera_position += camera_up * camera_speed;
+    }
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+    {
+        camera_position -= camera_up * camera_speed;
     }
 }
