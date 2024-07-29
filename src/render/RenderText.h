@@ -11,7 +11,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include "Shader.h"
+#include "shader/Shader.h"
 
 
 struct FontChar
