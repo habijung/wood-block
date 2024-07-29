@@ -9,6 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "camera/Camera.h"
 #include "render/RenderText.h"
 #include "shader/Shader.h"
 
@@ -28,13 +29,12 @@ struct CursorPos
 constexpr unsigned int SCR_WIDTH = 800;
 constexpr unsigned int SCR_HEIGHT = 600;
 
+CursorPos CursorPos = {0.0f, 0.0f};
+Camera Camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
 float obj[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
 unsigned int indices[] = {0, 1, 2};
-CursorPos CursorPos = {0.0f, 0.0f};
 
-glm::vec3 camera_position = glm::vec3(0.0f, 0.0f, 3.0f);
-glm::vec3 camera_front = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 camera_up = glm::vec3(0.0f, 1.0f, 0.0f);
 float delta_time = 0.0f;
 float last_frame = 0.0f;
 
@@ -118,11 +118,11 @@ int main()
                                       glm::vec3(1.0f, 0.0f, 0.0f));
         ObjectShader.setMat4("model", model);
 
-        glm::mat4 view = glm::lookAt(camera_position, camera_position + camera_front, camera_up);
+        glm::mat4 view = Camera.getViewMatrix();
         ObjectShader.setMat4("view", view);
 
-        glm::mat4 projection =
-            glm::perspective(glm::radians(45.0f), static_cast<float>(SCR_WIDTH / SCR_HEIGHT), 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(
+            glm::radians(45.0f), static_cast<float>(SCR_WIDTH) / static_cast<float>(SCR_HEIGHT), 0.1f, 100.0f);
         ObjectShader.setMat4("projection", projection);
 
         glBindVertexArray(vao);
@@ -158,36 +158,35 @@ void cursor_position_callback(GLFWwindow *window, double xpos, double ypos)
 
 void processInput(GLFWwindow *window)
 {
+    /* Exit */
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
         glfwSetWindowShouldClose(window, true);
     }
 
-    /* Camera move control */
-    float camera_speed = static_cast<float>(delta_time * 2.5);
-
+    /* Camera Move */
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
-        camera_position += camera_front * camera_speed;
+        Camera.processKeyboard(FORWARD, delta_time);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
-        camera_position -= camera_front * camera_speed;
+        Camera.processKeyboard(BACKWARD, delta_time);
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
-        camera_position -= glm::normalize(glm::cross(camera_front, camera_up)) * camera_speed;
+        Camera.processKeyboard(LEFT, delta_time);
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
-        camera_position += glm::normalize(glm::cross(camera_front, camera_up)) * camera_speed;
-    }
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-    {
-        camera_position += camera_up * camera_speed;
+        Camera.processKeyboard(RIGHT, delta_time);
     }
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
     {
-        camera_position -= camera_up * camera_speed;
+        Camera.processKeyboard(UP, delta_time);
+    }
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+    {
+        Camera.processKeyboard(DOWN, delta_time);
     }
 }

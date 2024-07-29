@@ -6,10 +6,12 @@ set(CMAKE_CXX_STANDARD 17)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 set(SOURCES
-        shader/Shader.h
-        shader/Shader.cpp
+        camera/Camera.cpp
+        camera/Camera.h
         render/RenderText.cpp
         render/RenderText.h
+        shader/Shader.h
+        shader/Shader.cpp
 )
 
 add_executable(${PROJECT_NAME}
