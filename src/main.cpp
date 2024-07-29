@@ -9,8 +9,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "shader/Shader.h"
 #include "render/RenderText.h"
+#include "shader/Shader.h"
 
 
 /* GLFW callback function */
@@ -91,6 +91,8 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    glEnable(GL_DEPTH_TEST);
+
     /* Render loop */
     while (!glfwWindowShouldClose(window))
     {
@@ -98,9 +100,20 @@ int main()
 
         // Rendering
         glClearColor(0.95f, 0.95f, 0.95f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         ObjectShader.use();
+
+        glm::mat4 default_mat4 = glm::mat4(1.0f);
+        glm::mat4 model = glm::rotate(default_mat4, static_cast<float>(glfwGetTime()) * glm::radians(-55.0f),
+                                      glm::vec3(1.0f, 0.0f, 0.0f));
+        glm::mat4 view = glm::translate(default_mat4, glm::vec3(0.0f, 0.0f, -3.0f));
+        glm::mat4 projection =
+            glm::perspective(glm::radians(45.0f), static_cast<float>(SCR_WIDTH / SCR_HEIGHT), 0.1f, 100.0f);
+
+        ObjectShader.setMat4("model", model);
+        ObjectShader.setMat4("view", view);
+        ObjectShader.setMat4("projection", projection);
 
         glBindVertexArray(vao);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
