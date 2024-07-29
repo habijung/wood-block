@@ -24,13 +24,16 @@ public:
     ~Camera();
 
     glm::mat4 getViewMatrix();
+    float getZoom();
     void processKeyboard(CameraMovement direction, float delta_time);
+    void processMouseScroll(float offset_y);
 
 private:
     glm::vec3 mPosition;
     glm::vec3 mFront;
     glm::vec3 mUp;
     float mSpeed;
+    float mZoom;
 };
 
 

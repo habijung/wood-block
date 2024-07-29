@@ -17,6 +17,7 @@
 /* GLFW callback function */
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void cursor_position_callback(GLFWwindow *window, double xpos, double ypos);
+void scroll_callback(GLFWwindow *window, double offset_x, double offset_y);
 
 void processInput(GLFWwindow *window);
 
@@ -60,6 +61,7 @@ int main()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, cursor_position_callback);
+    glfwSetScrollCallback(window, scroll_callback);
 
     if (!gladLoadGL(glfwGetProcAddress))
     {
@@ -121,8 +123,9 @@ int main()
         glm::mat4 view = Camera.getViewMatrix();
         ObjectShader.setMat4("view", view);
 
-        glm::mat4 projection = glm::perspective(
-            glm::radians(45.0f), static_cast<float>(SCR_WIDTH) / static_cast<float>(SCR_HEIGHT), 0.1f, 100.0f);
+        glm::mat4 projection =
+            glm::perspective(glm::radians(Camera.getZoom()),
+                             static_cast<float>(SCR_WIDTH) / static_cast<float>(SCR_HEIGHT), 0.1f, 100.0f);
         ObjectShader.setMat4("projection", projection);
 
         glBindVertexArray(vao);
@@ -154,6 +157,11 @@ void cursor_position_callback(GLFWwindow *window, double xpos, double ypos)
     glfwGetCursorPos(window, &xpos, &ypos);
     CursorPos.x = static_cast<float>(xpos);
     CursorPos.y = static_cast<float>(ypos);
+}
+
+void scroll_callback(GLFWwindow *window, double offset_x, double offset_y)
+{
+    Camera.processMouseScroll(static_cast<float>(offset_y));
 }
 
 void processInput(GLFWwindow *window)

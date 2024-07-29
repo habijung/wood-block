@@ -7,11 +7,14 @@ Camera::Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up)
     mFront = front;
     mUp = up;
     mSpeed = 2.5f;
+    mZoom = 45.0f;
 }
 
 Camera::~Camera() {}
 
 glm::mat4 Camera::getViewMatrix() { return glm::lookAt(mPosition, mPosition + mFront, mUp); }
+
+float Camera::getZoom() { return mZoom; }
 
 void Camera::processKeyboard(CameraMovement direction, float delta_time)
 {
@@ -40,5 +43,19 @@ void Camera::processKeyboard(CameraMovement direction, float delta_time)
     if (direction == DOWN)
     {
         mPosition -= mUp * velocity;
+    }
+}
+
+void Camera::processMouseScroll(float offset_y)
+{
+    mZoom -= offset_y * mSpeed;
+
+    if (mZoom < 15.0f)
+    {
+        mZoom = 15.0f;
+    }
+    if (mZoom > 60.0f)
+    {
+        mZoom = 60.0f;
     }
 }
