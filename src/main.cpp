@@ -16,7 +16,7 @@
 
 /* GLFW callback function */
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
-void cursor_position_callback(GLFWwindow *window, double xpos, double ypos);
+void cursor_position_callback(GLFWwindow *window, double pos_x, double pos_y);
 void scroll_callback(GLFWwindow *window, double offset_x, double offset_y);
 
 void processInput(GLFWwindow *window);
@@ -153,11 +153,11 @@ int main()
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) { glViewport(0, 0, width, height); }
 
-void cursor_position_callback(GLFWwindow *window, double xpos, double ypos)
+void cursor_position_callback(GLFWwindow *window, double pos_x, double pos_y)
 {
-    glfwGetCursorPos(window, &xpos, &ypos);
-    CursorPos.x = static_cast<float>(xpos);
-    CursorPos.y = static_cast<float>(ypos);
+    glfwGetCursorPos(window, &pos_x, &pos_y);
+    CursorPos.x = static_cast<float>(pos_x);
+    CursorPos.y = static_cast<float>(pos_y);
 }
 
 void scroll_callback(GLFWwindow *window, double offset_x, double offset_y)
