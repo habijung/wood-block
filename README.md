@@ -1,4 +1,12 @@
-# Untitled
+# Wood Block
+
+## About Project
+
+Create wood blocks and decorate each floor.
+
+### Current Result
+
+![result.png](doc/result.png)
 
 ## Build & Run
 
@@ -18,7 +26,7 @@
   - **Clang** with LLVM (`windows-msvc`)
   - **Visual Studio 2022** for using vcpkg
 - macOS
-  - TBA
+  - **Apple Clang** with Xcode SDK
 - Linux
   - TBA
 
@@ -45,4 +53,4 @@ cd cmake-build/src
 ```
 
 ---
-**Last Updated:** 24.07.25
+**Last Updated:** 24.07.30
