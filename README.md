@@ -6,7 +6,7 @@ Create wood blocks and decorate each floor.
 
 ### Current Result
 
-![result.png](doc/result.png)
+<img alt="result.png" src="doc/result.png" width="500">
 
 ## Build & Run
 
