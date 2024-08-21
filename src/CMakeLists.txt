@@ -8,6 +8,8 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 set(SOURCES
         camera/Camera.cpp
         camera/Camera.h
+        mesh/Mesh.cpp
+        mesh/Mesh.h
         render/RenderText.cpp
         render/RenderText.h
         shader/Shader.h
