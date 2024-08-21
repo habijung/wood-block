@@ -31,6 +31,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
 target_link_libraries(${PROJECT_NAME} PRIVATE GLAD)
 target_link_libraries(${PROJECT_NAME} PRIVATE Freetype::Freetype)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
+target_link_libraries(${PROJECT_NAME} PRIVATE assimp::assimp)
 
 # Copy resources
 add_custom_command(
