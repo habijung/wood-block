@@ -10,6 +10,8 @@ set(SOURCES
         camera/Camera.h
         mesh/Mesh.cpp
         mesh/Mesh.h
+        mesh/Model.cpp
+        mesh/Model.h
         render/RenderText.cpp
         render/RenderText.h
         shader/Shader.h
