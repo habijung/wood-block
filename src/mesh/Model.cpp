@@ -3,7 +3,9 @@
 #include <iostream>
 
 #include <glad/gl.h>
-#include "../assimp/contrib/stb/stb_image.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 
 Model::Model(char *path) { loadModel(path); }

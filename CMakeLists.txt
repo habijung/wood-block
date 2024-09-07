@@ -3,6 +3,8 @@ project(untitled)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Add subdirectories
+# Add external/
 add_subdirectory(external)
+
+# Add src/
 add_subdirectory(src)

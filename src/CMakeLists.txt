@@ -25,11 +25,17 @@ add_executable(${PROJECT_NAME}
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+# Get global properties
+get_property(ASSIMP_CONTRIB GLOBAL PROPERTY ASSIMP_CONTRIB)
+
 # Find packages
 find_package(OpenGL REQUIRED)
 find_package(Freetype REQUIRED)
 
-# Target link libraries
+# Includes
+target_include_directories(${PROJECT_NAME} PRIVATE ${ASSIMP_CONTRIB}/stb)
+
+# Link libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
 target_link_libraries(${PROJECT_NAME} PRIVATE GLAD)
