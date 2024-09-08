@@ -7,7 +7,7 @@ CXX_COMPILER=$(which c++)
 NINJA=$(which ninja)
 OS=$(uname)
 
-# If OS is Windows, add EXE (.exe) extention
+# If OS is Windows, add EXE (.exe) extension
 case $OS in
 MSYS* | MINGW* | CYGWIN*)
 	OS="Windows"
@@ -32,11 +32,16 @@ cmake \
 	-S . \
 	-B cmake-build \
 	-G Ninja \
-	-D CMAKE_BUILD_TYPE="Debug" \
 	-D CMAKE_C_COMPILER="${C_COMPILER}" \
 	-D CMAKE_CXX_COMPILER="${CXX_COMPILER}" \
 	-D CMAKE_MAKE_PROGRAM="${NINJA}" \
-	-D CMAKE_TOOLCHAIN_FILE="${SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+	--preset "Configure"
 
 # CMake Build
-cmake --build cmake-build -j 10
+#cmake --build cmake-build -j 10
+cmake --build cmake-build --preset "Build"
+
+# Copy shared libraries
+if [ "$OS" = "Windows" ]; then
+    find cmake-build/external -type f -name "*.dll" -exec cp {} "cmake-build/bin" \;
+fi

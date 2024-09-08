@@ -44,16 +44,28 @@ target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
 target_link_libraries(${PROJECT_NAME} PRIVATE assimp::assimp)
 
 # Copy resources
-add_custom_command(
-        TARGET ${PROJECT_NAME} POST_BUILD
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_CURRENT_SOURCE_DIR}/data
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>/data
-)
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/data)
 
-add_custom_command(
-        TARGET ${PROJECT_NAME} POST_BUILD
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_CURRENT_SOURCE_DIR}/glsl
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>/glsl
-)
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/glsl)
+
+# Copy shared libraries
+if (WIN32)
+    file(GLOB SHARED_LIBS
+            ${CMAKE_BINARY_DIR}/external/assimp/bin/*.dll
+            ${CMAKE_BINARY_DIR}/external/glfw/src/*.dll
+            ${CMAKE_BINARY_DIR}/external/glm/glm/*.dll
+    )
+
+    foreach (SHARED_LIB ${SHARED_LIBS})
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                ${SHARED_LIB}
+                $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+    endforeach ()
+endif ()

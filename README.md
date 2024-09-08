@@ -52,5 +52,12 @@ cd cmake-build/src
 ./untitled.exe
 ```
 
+If you can't find some shared libraries in any IDE, run this and build again.
+
+```shell
+# Windows
+find cmake-build/external -type f -name "*.dll" -exec cp {} "cmake-build/bin" \; 
+```
+
 ---
-**Last Updated:** 24.07.30
+**Last Updated:** 24.09.08
