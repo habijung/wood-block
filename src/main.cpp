@@ -32,7 +32,7 @@ constexpr unsigned int SCR_WIDTH = 800;
 constexpr unsigned int SCR_HEIGHT = 600;
 
 CursorPos CursorPos = {0.0f, 0.0f};
-Camera Camera(glm::vec3(0.0f, 0.0f, 10.0f));
+Camera Camera(glm::vec3(0.0f, 0.5f, 8.0f));
 
 float obj[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
 unsigned int indices[] = {0, 1, 2};
