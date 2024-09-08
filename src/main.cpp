@@ -10,6 +10,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "camera/Camera.h"
+#include "mesh/Model.h"
 #include "render/RenderText.h"
 #include "shader/Shader.h"
 
@@ -31,7 +32,7 @@ constexpr unsigned int SCR_WIDTH = 800;
 constexpr unsigned int SCR_HEIGHT = 600;
 
 CursorPos CursorPos = {0.0f, 0.0f};
-Camera Camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera Camera(glm::vec3(0.0f, 0.0f, 10.0f));
 
 float obj[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
 unsigned int indices[] = {0, 1, 2};
@@ -99,6 +100,10 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    /* Load Model (Backpack) */
+    Shader BackpackShader("glsl/obj.vert", "glsl/obj.frag");
+    Model BackpackModel("data/models/backpack/backpack.obj");
+
     glEnable(GL_DEPTH_TEST);
 
     /* Render loop */
@@ -118,7 +123,7 @@ int main()
         ObjectShader.use();
 
         glm::mat4 model = glm::rotate(glm::mat4(1.0f), static_cast<float>(glfwGetTime()) * glm::radians(-55.0f),
-                                      glm::vec3(1.0f, 0.0f, 0.0f));
+                                      glm::vec3(0.0f, 1.0f, 0.0f));
         ObjectShader.setMat4("model", model);
 
         glm::mat4 view = Camera.getViewMatrix();
@@ -132,6 +137,9 @@ int main()
         glBindVertexArray(vao);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+        /* Draw Model */
+        BackpackModel.draw(BackpackShader);
 
         /* Draw mouse cursor position text */
         std::stringstream cursor_pos_text;

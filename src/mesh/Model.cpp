@@ -8,7 +8,7 @@
 #include <stb_image.h>
 
 
-Model::Model(char *path) { loadModel(path); }
+Model::Model(std::string path) { loadModel(path); }
 
 Model::~Model() {}
 
@@ -180,7 +180,10 @@ unsigned int Model::loadTextureFromFile(const char *path, const std::string &dir
         }
 
         glBindTexture(GL_TEXTURE_2D, texture_id);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_INT, data);
+
+        // TODO: Fix Segmentation fault
+        // glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_INT, &data);
+
         glGenerateMipmap(GL_TEXTURE_2D);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
